@@ -59,10 +59,21 @@
     return [self URLWithBaseURL:[NSURL URLWithString:baseURLString] resourcePath:resourcePath queryParameters:queryParameters];
 }
 
+
+// http://stackoverflow.com/questions/10551474/rkobjectloader-trunc-my-path-with-array-params#_=_
+// http://stackoverflow.com/questions/10551474/rkobjectloader-trunc-my-path-with-array-params#_=_
+// http://stackoverflow.com/questions/10551474/rkobjectloader-trunc-my-path-with-array-params#_=_
+// http://stackoverflow.com/questions/10551474/rkobjectloader-trunc-my-path-with-array-params#_=_
+// http://stackoverflow.com/questions/10551474/rkobjectloader-trunc-my-path-with-array-params#_=_
+// http://stackoverflow.com/questions/10551474/rkobjectloader-trunc-my-path-with-array-params#_=_
+// http://stackoverflow.com/questions/10551474/rkobjectloader-trunc-my-path-with-array-params#_=_
+// http://stackoverflow.com/questions/10551474/rkobjectloader-trunc-my-path-with-array-params#_=_
+// http://stackoverflow.com/questions/10551474/rkobjectloader-trunc-my-path-with-array-params#_=_
+// http://stackoverflow.com/questions/10551474/rkobjectloader-trunc-my-path-with-array-params#_=_
+
 // Designated initializer. Note this diverges from NSURL due to a bug in Cocoa. We can't
 // call initWithString:relativeToURL: from a subclass.
 - (id)initWithBaseURL:(NSURL *)theBaseURL resourcePath:(NSString *)theResourcePath queryParameters:(NSDictionary *)theQueryParameters {
-    // Merge any existing query parameters with the incoming dictionary
     NSDictionary *resourcePathQueryParameters = [theResourcePath queryParameters];
     NSMutableDictionary *mergedQueryParameters = [NSMutableDictionary dictionaryWithDictionary:[theBaseURL queryParameters]];
     [mergedQueryParameters addEntriesFromDictionary:resourcePathQueryParameters];
@@ -75,9 +86,12 @@
     NSString *completePath = resourcePathWithoutQueryString ? [baseURLPath stringByAppendingString:resourcePathWithoutQueryString] : baseURLPath;
     NSString* completePathWithQuery = [completePath stringByAppendingQueryParameters:mergedQueryParameters];
 
-    // NOTE: You can't safely use initWithString:relativeToURL: in a NSURL subclass, see http://www.openradar.me/9729706
-    // So we unfortunately convert into an NSURL before going back into an NSString -> RKURL
-    NSURL* completeURL = [NSURL URLWithString:completePathWithQuery relativeToURL:theBaseURL];
+    // before
+    //    NSURL* completeURL = [NSURL URLWithString:completePathWithQuery relativeToURL:theBaseURL];
+    // after my edit
+    NSString *cPath = theResourcePath ? theResourcePath : baseURLPath;
+    NSURL* completeURL = [NSURL URLWithString:cPath relativeToURL:theBaseURL];
+
     if (!completeURL) {
         RKLogError(@"Failed to build RKURL by appending resourcePath and query parameters '%@' to baseURL '%@'", theResourcePath, theBaseURL);
         [self release];
